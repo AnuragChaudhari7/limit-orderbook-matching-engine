@@ -15,11 +15,9 @@ class OrderBook {
         //NOTE: In future, replace with custom trees instead of slow maps here (despite RBT)
     
     public:
-        /*Constructor*/
         OrderBook();
 
-        /*Methods*/
-        //NOTE: submitLimitOrder(), cancelLimitOrder(), updateLimitOrder(), go here as functions
+        //NOTE: submitLimitOrder(), cancelLimitOrder(id), updateLimitOrder(id, quantity, price), go here as functions
         unsigned int submitLimitOrder(unsigned int quantity, bool type, double price);
 
 };

@@ -4,10 +4,10 @@
 class Order{
     private:
         /*Fields all orders should have*/
-        unsigned int id; //TODO: how to generate unique IDs?
-        unsigned long int timestamp; //TODO: What do we use? Unix Epoch?
+        unsigned int id; //NOTE: how to generate unique IDs?
+        unsigned long int timestamp; //NOTE: What do we use? Unix Epoch?
         unsigned int quantity;
-        bool type; //TODO: Should it be bool? its basically an int (0: buy, 1: sell)
+        bool type; //(0: buy, 1: sell)
 
     public:
         /*Constructor*/

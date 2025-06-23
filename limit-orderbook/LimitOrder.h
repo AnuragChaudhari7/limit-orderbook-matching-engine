@@ -6,7 +6,7 @@
 class LimitOrder : public Order {
     private:
         /*Fields (additional for LimitOrder)*/
-        double price; //TODO: Not sure if it should be double (must be +ve though)
+        double price;
     public:
         LimitOrder(unsigned int _id, unsigned long int _timestamp, unsigned int _quantity, bool _type, double _price);
         //TODO: Getter for price

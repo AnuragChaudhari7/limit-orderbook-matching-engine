@@ -20,6 +20,9 @@ class OrderBook {
         //NOTE: submitLimitOrder(), cancelLimitOrder(id), updateLimitOrder(id, quantity, price), go here as functions
         unsigned int submitLimitOrder(unsigned int quantity, bool type, double price);
 
+        map<double, deque<Order>> get_bid_book(){return bid_book;}
+
+        map<double, deque<Order>> get_ask_book(){return ask_book;}
 };
 
 #endif

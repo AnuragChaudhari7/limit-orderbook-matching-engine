@@ -21,14 +21,14 @@ unsigned int OrderBook::submitLimitOrder(unsigned int quantity, bool type, doubl
             auto& order_queue = price_it->second;
 
             while(!order_queue.empty()){
-                unsigned int order_quantity = order_queue.front().get_quantity();
+                unsigned int order_quantity = order_queue.front()->get_quantity();
                 
                 if(quantity > order_quantity) {
                     quantity -= order_quantity;
                     order_queue.pop_front();
                 }
                 else if(quantity < order_quantity) {
-                    order_queue.front().set_quantity(order_quantity - quantity);
+                    order_queue.front()->set_quantity(order_quantity - quantity);
                     return id;
                 }
                 else {
@@ -46,7 +46,7 @@ unsigned int OrderBook::submitLimitOrder(unsigned int quantity, bool type, doubl
 
         /*Residual Limit Order Quantity - insert into bid book*/
         // deque<Order> not deque<LimitOrder>
-        bid_book[price].emplace_back(id, timestamp, quantity, type, price); //N.B. emplace_back == push_back(Order())
+        bid_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, quantity, type, price));
     }
 
     // else{ //Sell Order

@@ -11,6 +11,8 @@ class Order{
     public:
         Order(unsigned int _id, unsigned long int _timestamp, unsigned int _quantity, bool _type);
 
+        virtual ~Order() = default;
+
         unsigned int get_id(){return id;}
 
         unsigned long int get_timestamp(){return timestamp;}

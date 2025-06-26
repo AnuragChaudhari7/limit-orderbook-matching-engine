@@ -11,14 +11,15 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
     unsigned int id = 7;
     unsigned long int timestamp = 10;
 
+    //TODO: order_queue.front()->... therefore ensure not null
     /*Matching Logic*/
     if(!type){ //Buy Order
         
-        auto price_it = ask_book.begin();
-        while(price_it != ask_book.end()) {
-            if(price_it->first > price) break;
+        auto ask_it = ask_book.begin();
+        while(ask_it != ask_book.end()) {
+            if(ask_it->first > price) break;
 
-            auto& order_queue = price_it->second;
+            auto& order_queue = ask_it->second;
 
             while(!order_queue.empty()){
                 unsigned int order_quantity = order_queue.front()->get_quantity();
@@ -34,23 +35,61 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
                 else {
                     order_queue.pop_front();
                     if(order_queue.empty()) {
-                        price_it = ask_book.erase(price_it);
+                        ask_it = ask_book.erase(ask_it);
                     }
                     return id;
                 }
             }
 
             /*If queue is empty after loop, erase from ask book*/
-            price_it = ask_book.erase(price_it);
+            ask_it = ask_book.erase(ask_it);
         }
 
         /*Residual Limit Order Quantity - insert into bid book*/
         // deque<Order> not deque<LimitOrder>
-        bid_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, quantity, type, price));
+        bid_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
     }
 
-    // else{ //Sell Order
-        
-    // }
+    else{ //Sell Order
+        auto bid_it = bid_book.rbegin();
+        while(bid_it != bid_book.rend()) {
+            if(bid_it->first < price) break;
+
+            auto& order_queue = bid_it->second;
+
+            while(!order_queue.empty()){
+                unsigned int order_quantity = order_queue.front()->get_quantity();
+                
+                if(quantity > order_quantity) {
+                    quantity -= order_quantity;
+                    order_queue.pop_front();
+                }
+                else if(quantity < order_quantity) {
+                    order_queue.front()->set_quantity(order_quantity - quantity);
+                    return id;
+                }
+                else {
+                    order_queue.pop_front();
+                    if(order_queue.empty()) {
+                        //N.B. Assumes bid_it != bid_book.end() (holds due to outer while loop and we're not messing with it)
+                        auto base_it = next(bid_it).base();
+                        base_it = bid_book.erase(base_it);
+                        bid_it = make_reverse_iterator(base_it);
+                    }
+                    return id;
+                }
+            }
+
+            /*If queue is empty after loop, erase from ask book*/
+            //N.B. Assumes bid_it != bid_book.end() (holds due to outer while loop and we're not messing with it)
+            auto base_it = next(bid_it).base();
+            base_it = bid_book.erase(base_it);
+            bid_it = make_reverse_iterator(base_it);
+        }
+
+        /*Residual Limit Order Quantity - insert into ask book*/
+        // deque<Order> not deque<LimitOrder>
+        ask_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
+    }
     return 0;
 }

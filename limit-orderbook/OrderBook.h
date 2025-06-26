@@ -9,6 +9,7 @@ using namespace std;
 
 class OrderBook {
     private: //NOTE: Extension plans: if you use a matching engine class, the derivative class needs access to books (protected)
+        //NOTE: Might be worth changing the price instead of double to be int due to floating point precision!
         /*Fields*/
         map<double, deque<shared_ptr<Order>>> bid_book;
         map<double, deque<shared_ptr<Order>>> ask_book;

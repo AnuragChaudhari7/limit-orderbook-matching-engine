@@ -1,4 +1,4 @@
 #include "Order.h"
 
-Order::Order(unsigned int _id, unsigned long int _timestamp, unsigned int _quantity, bool _type)
-    : id(_id), timestamp(_timestamp), quantity(_quantity), type(_type) {}
+Order::Order(unsigned int _id, unsigned long int _timestamp, bool _type, unsigned int _quantity)
+    : id(_id), timestamp(_timestamp), type(_type), quantity(_quantity) {}

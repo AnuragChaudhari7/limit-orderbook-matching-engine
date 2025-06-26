@@ -6,7 +6,7 @@ OrderBook::OrderBook(){
     /*Default map & deque constructors*/
 }
 
-unsigned int OrderBook::submitLimitOrder(unsigned int quantity, bool type, double price){
+unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, double price){
     /*NOTE: (temporary) generate id & timestamp*/
     unsigned int id = 7;
     unsigned long int timestamp = 10;

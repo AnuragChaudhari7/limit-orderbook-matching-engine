@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -Wall -std=c++17
+CXXFLAGS = -g -fsanitize=address -fno-omit-frame-pointer -Werror -std=c++17
 TARGET = main.out
 SRC = ./*.cpp
 

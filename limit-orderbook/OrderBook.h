@@ -9,20 +9,21 @@ using namespace std;
 
 class OrderBook {
     private: //NOTE: Extension plans: if you use a matching engine class, the derivative class needs access to books (protected)
+        //NOTE: Might be worth changing the price instead of double to be int due to floating point precision!
         /*Fields*/
-        map<double, deque<Order>> bid_book;
-        map<double, deque<Order>> ask_book;
+        map<double, deque<shared_ptr<Order>>> bid_book;
+        map<double, deque<shared_ptr<Order>>> ask_book;
         //NOTE: In future, replace with custom trees instead of slow maps here (despite RBT)
     
     public:
         OrderBook();
 
         //NOTE: submitLimitOrder(), cancelLimitOrder(id), updateLimitOrder(id, quantity, price), go here as functions
-        unsigned int submitLimitOrder(unsigned int quantity, bool type, double price);
+        unsigned int submitLimitOrder(bool type, unsigned int quantity , double price);
 
-        map<double, deque<Order>> get_bid_book(){return bid_book;}
+        map<double, deque<shared_ptr<Order>>> get_bid_book(){return bid_book;}
 
-        map<double, deque<Order>> get_ask_book(){return ask_book;}
+        map<double, deque<shared_ptr<Order>>> get_ask_book(){return ask_book;}
 };
 
 #endif

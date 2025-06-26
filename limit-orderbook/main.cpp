@@ -25,9 +25,9 @@ int main(){
     cout << "Ask Order Quantity: " << book.get_ask_book()[price].front()->get_quantity() << endl;
     cout << "Ask Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_ask_book()[price].front())->get_price() << endl;
 
-    /*Task Failed Succesfully - seg fault here since buy order got fully filled*/
-    cout << "Bid Order Quantity: " << book.get_bid_book()[price].front()->get_quantity() << endl;
-    cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[price].front())->get_price() << endl;
+    // /*Task Failed Succesfully - seg fault here since buy order got fully filled*/
+    // cout << "Bid Order Quantity: " << book.get_bid_book()[price].front()->get_quantity() << endl;
+    // cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[price].front())->get_price() << endl;
 
     return 0;
 }

@@ -8,7 +8,7 @@ class LimitOrder : public Order {
         double price;
 
     public:
-        LimitOrder(unsigned int _id, unsigned long int _timestamp, unsigned int _quantity, bool _type, double _price);
+        LimitOrder(unsigned int _id, unsigned long int _timestamp,  bool _type, unsigned int _quantity, double _price);
 
         double get_price(){return price;}
 

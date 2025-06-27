@@ -7,7 +7,7 @@
 //     EXPECT_EQ(1, 1) << "You isda foool";
 // }
 
-bool books_match(map<double, deque<shared_ptr<Order>>> expected_book, map<double, deque<shared_ptr<Order>>> book){
+bool books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double, deque<shared_ptr<Order>>> book){
     /*Iterators for the price levels*/
     auto expected_it = expected_book.begin();
     auto it = book.begin();
@@ -68,7 +68,11 @@ bool books_match(map<double, deque<shared_ptr<Order>>> expected_book, map<double
 }
 
 //TODO: Test the comparison function
-
+TEST(BookEquality, EmptyBooks){
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    EXPECT_EQ(books_equal(expected_book, book), true);
+}
 
 //TODO: Can I use a template to create book once? 
 TEST(MatchingLogic, OneBuyLimitOrder){
@@ -83,5 +87,5 @@ TEST(MatchingLogic, OneBuyLimitOrder){
     expected_bid_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
     
     /*Check equality*/
-    EXPECT_EQ(books_match(expected_bid_book, bid_book), true);
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), true);
 }

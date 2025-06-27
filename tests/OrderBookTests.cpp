@@ -7,6 +7,7 @@
 //     EXPECT_EQ(1, 1) << "You isda foool";
 // }
 
+//TODO: Change from bool to int. Give certain codes for certain errors. Use GTest for diff. assertions by case.
 bool books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double, deque<shared_ptr<Order>>> book){
     /*Iterators for the price levels*/
     auto expected_it = expected_book.begin();
@@ -72,6 +73,18 @@ TEST(BookEquality, EmptyBooks){
     map<double, deque<shared_ptr<Order>>> expected_book;
     map<double, deque<shared_ptr<Order>>> book;
     EXPECT_EQ(books_equal(expected_book, book), true);
+}
+
+TEST(BookEquality, OneBuyLimitOrder){
+
+}
+
+TEST(BookEquality, OneSellLimitOrder){
+    
+}
+
+TEST(BookEquality, CompleteMatchOneBuyOneSellLimit){
+    
 }
 
 //TODO: Can I use a template to create book once? 

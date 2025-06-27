@@ -5,6 +5,7 @@
 #include <deque>
 
 #include "Order.h"
+#include "LimitOrder.h"
 using namespace std;
 
 class OrderBook {

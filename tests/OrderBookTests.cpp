@@ -79,25 +79,62 @@ int books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double,
     return 0;
 }
 
-//TODO: Test the comparison function
+/*TODO:
+ * Test Cases for books_equal() comparison function. 
+ * Tests all return values: 0,1,2,3,4,5,6s
+ * The reason for this is to make failed test cases easier to debug
+ * Ensures id, timestamp differ (as func doesnt test this)
+ */
 TEST(BookEquality, EmptyBooks){
     map<double, deque<shared_ptr<Order>>> expected_book;
     map<double, deque<shared_ptr<Order>>> book;
     EXPECT_EQ(books_equal(expected_book, book), 0);
 }
 
-TEST(BookEquality, OneBuyLimitOrder){
-
+TEST(BookEquality, OneOrder){
+    //ret 0
 }
 
-TEST(BookEquality, OneSellLimitOrder){
-    
+TEST(BookEquality, OnePriceLevelManyOrders){
+    //ret 0
 }
 
-TEST(BookEquality, CompleteMatchOneBuyOneSellLimit){
-    
+TEST(BookEquality, ManyPriceLevelsManyOrders){
+    //ret 0
 }
 
+TEST(BookEquality, PriceLevelsNotMatch){
+    //ret 1
+}
+
+TEST(BookEquality, OrderPriceNotMatchPriceLevel){
+    //ret 2
+}
+
+TEST(BookEquality, ZeroQuantityOrderNotRemoved){
+    //ret 3
+}
+
+TEST(BookEquality, IncorrectOrderTypeInBook){
+    //ret 4
+}
+
+TEST(BookEquality, OrderQuantityNotMatch){
+    //ret 5
+}
+
+TEST(BookEquality, NumOrdersInLevelNotMatch){
+    //ret 6
+}
+
+TEST(BookEquality, NumPriceLevelsNotMatch){
+    //ret 7
+}
+
+/*TODO:
+ * Test Cases for submitLimitOrder()
+ * Runs through many edge case matching scenarios
+ */
 //TODO: Can I use a template to create book once? 
 TEST(MatchingLogic, OneBuyLimitOrder){
     /*Limit Order Submission*/
@@ -111,5 +148,13 @@ TEST(MatchingLogic, OneBuyLimitOrder){
     expected_bid_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
     
     /*Check equality*/
-    EXPECT_EQ(books_equal(expected_bid_book, bid_book), true);
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+}
+
+TEST(MatchingLogic, OneSellLimitOrder){
+    
+}
+
+TEST(MatchingLogic, CompleteMatchOneBuyOneSellLimit){
+    
 }

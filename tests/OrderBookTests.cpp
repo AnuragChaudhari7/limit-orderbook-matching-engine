@@ -15,7 +15,7 @@
  *  2: order's price doesn't match its price level
  *  3: 0 quantity order not deleted
  *  4: incorrect order type in book
- *  5: order quantity not equal
+ *  5: both order quantities not equal
  *  6: difference in # of orders in list for price level
  *  7: difference in # of price levels 
  */
@@ -93,42 +93,103 @@ TEST(BookEquality, EmptyBooks){
 
 TEST(BookEquality, OneOrder){
     //ret 0
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 0);
 }
 
 TEST(BookEquality, OnePriceLevelManyOrders){
     //ret 0
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    expected_book[100].emplace_back(make_shared<LimitOrder>(3, 6, 0, 10, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 8, 0, 10, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 0);
 }
 
 TEST(BookEquality, ManyPriceLevelsManyOrders){
     //ret 0
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    expected_book[100].emplace_back(make_shared<LimitOrder>(3, 6, 0, 10, 100));
+    expected_book[105].emplace_back(make_shared<LimitOrder>(7, 10, 0, 15, 105));
+    expected_book[105].emplace_back(make_shared<LimitOrder>(3, 6, 0, 20, 105));
+
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 8, 0, 10, 100));
+    book[105].emplace_back(make_shared<LimitOrder>(7, 10, 0, 15, 105));
+    book[105].emplace_back(make_shared<LimitOrder>(3, 6, 0, 20, 105));
 }
 
 TEST(BookEquality, PriceLevelsNotMatch){
     //ret 1
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[105].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 105));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 1);
 }
 
 TEST(BookEquality, OrderPriceNotMatchPriceLevel){
     //ret 2
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 105));
+    EXPECT_EQ(books_equal(expected_book, book), 2);
 }
 
 TEST(BookEquality, ZeroQuantityOrderNotRemoved){
     //ret 3
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 0, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 3);
 }
 
 TEST(BookEquality, IncorrectOrderTypeInBook){
     //ret 4
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 1, 5, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 4);
 }
 
 TEST(BookEquality, OrderQuantityNotMatch){
     //ret 5
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 4, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 5);
 }
 
 TEST(BookEquality, NumOrdersInLevelNotMatch){
     //ret 6
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 10, 100));
+    EXPECT_EQ(books_equal(expected_book, book), 6);
 }
 
 TEST(BookEquality, NumPriceLevelsNotMatch){
     //ret 7
+    map<double, deque<shared_ptr<Order>>> expected_book;
+    map<double, deque<shared_ptr<Order>>> book;
+    expected_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 5, 100));
+    book[100].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 100));
+    book[105].emplace_back(make_shared<LimitOrder>(5, 4, 0, 5, 105));
+    EXPECT_EQ(books_equal(expected_book, book), 7);
 }
 
 /*TODO:

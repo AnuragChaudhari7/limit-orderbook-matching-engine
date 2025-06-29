@@ -192,6 +192,15 @@ TEST(BookEquality, NumPriceLevelsNotMatch){
  * Test many edge cases and normal behaviour
  */
 
+TEST(MatchingLogic, OrderValidation){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(0, 1, -10);
+    auto bid_book = book.get_bid_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+}
+
 /* Single Price Level, Single Order*/
 TEST(MatchingLogic, OneBuyLimitOrder){
     /*Limit Order Submission*/

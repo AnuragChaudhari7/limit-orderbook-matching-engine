@@ -3,10 +3,6 @@
 #include "Order.h"
 #include "LimitOrder.h"
 
-// TEST(LimitOrderBookTest, Sanity){
-//     EXPECT_EQ(1, 1) << "You isda foool";
-// }
-
 /**
  * Method to test if 2 books match.
  * @return 
@@ -51,7 +47,6 @@ int books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double,
                 return 3; //quantity <= 0, order shouldve been deleted
             }
 
-            //TODO: Check if order type in actual matches expected
             if(expected_order->get_type() !=order->get_type()){
                 return 4;
             }
@@ -79,7 +74,7 @@ int books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double,
     return 0;
 }
 
-/*TODO:
+/*
  * Test Cases for books_equal() comparison function. 
  * Tests all return values: 0,1,2,3,4,5,6s
  * The reason for this is to make failed test cases easier to debug
@@ -194,9 +189,10 @@ TEST(BookEquality, NumPriceLevelsNotMatch){
 
 /*TODO:
  * Test Cases for submitLimitOrder()
- * Runs through many edge case matching scenarios
+ * Test many edge cases and normal behaviour
  */
-//TODO: Can I use a template to create book once? 
+
+/* Single Price Level, Single Order*/
 TEST(MatchingLogic, OneBuyLimitOrder){
     /*Limit Order Submission*/
     OrderBook book = OrderBook();
@@ -213,9 +209,139 @@ TEST(MatchingLogic, OneBuyLimitOrder){
 }
 
 TEST(MatchingLogic, OneSellLimitOrder){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(1, 5, 100);
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    expected_ask_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 1, 5, 100));
     
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
 }
 
 TEST(MatchingLogic, CompleteMatchOneBuyOneSellLimit){
-    
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(0, 5, 100);
+    book.submitLimitOrder(1, 5, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
 }
+
+/*Single Price Level, Multiple Orders*/
+
+TEST(MatchingLogic, BidBookLevelFullFillAndSellOrderFullFill){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(0, 5, 100);
+    book.submitLimitOrder(0, 10, 100);
+    book.submitLimitOrder(0, 1, 100);
+    book.submitLimitOrder(1, 16, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
+}
+
+TEST(MatchingLogic, AskBookLevelFullFillAndBuyOrderFullFill){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(1, 10, 100);
+    book.submitLimitOrder(1, 10, 100);
+    book.submitLimitOrder(1, 1, 100);
+    book.submitLimitOrder(0, 21, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
+}
+
+TEST(MatchingLogic, BidBookLevelFullFillAndSellOrderPartialFill){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(0, 10, 100);
+    book.submitLimitOrder(0, 5, 100);
+    book.submitLimitOrder(0, 1, 100);
+    book.submitLimitOrder(1, 20, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    expected_ask_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 1, 4, 100));
+
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
+}
+
+TEST(MatchingLogic, AskBookLevelFullFillAndBuyOrderPartialFill){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(1, 10, 100);
+    book.submitLimitOrder(1, 5, 100);
+    book.submitLimitOrder(1, 1, 100);
+    book.submitLimitOrder(0, 20, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    expected_bid_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 4, 100));
+
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
+}
+
+TEST(MatchingLogic, BidBookLevelPartialFillAndSellOrderFullFill){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(0, 5, 100);
+    book.submitLimitOrder(0, 12, 100);
+    book.submitLimitOrder(0, 1, 100);
+    book.submitLimitOrder(1, 10, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    expected_bid_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 7, 100));
+    expected_bid_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 0, 1, 100));
+
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
+}
+
+TEST(MatchingLogic, AskBookLevelPartialFillAndBuyOrderFullFill){
+    OrderBook book = OrderBook();
+    book.submitLimitOrder(1, 5, 100);
+    book.submitLimitOrder(1, 12, 100);
+    book.submitLimitOrder(1, 1, 100);
+    book.submitLimitOrder(0, 10, 100);
+
+    auto bid_book = book.get_bid_book();
+    auto ask_book = book.get_ask_book();
+
+    map<double, deque<shared_ptr<Order>>> expected_bid_book;
+    map<double, deque<shared_ptr<Order>>> expected_ask_book;
+    expected_ask_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 1, 7, 100));
+    expected_ask_book[100].emplace_back(make_shared<LimitOrder>(7, 10, 1, 1, 100));
+
+    EXPECT_EQ(books_equal(expected_bid_book, bid_book), 0);
+    EXPECT_EQ(books_equal(expected_ask_book, ask_book), 0);
+}
+
+/*TODO: Multiple Price Levels, Multiple Orders*/

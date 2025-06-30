@@ -4,30 +4,31 @@
 #include "OrderBook.h"
 #include "Order.h"
 #include "LimitOrder.h"
+#include "CSVParser.h"
 using namespace std;
 
 int main(){
     //cout << "Its ALIVEE" << endl;
     OrderBook book = OrderBook();
-    
-    bool type = 0; //0: buy
-    double price = 110;
-    unsigned int quantity = 10;
+    CSVParser parser = CSVParser(book);
+    int status = parser.process_csv("data/example1.csv");
+    cout << "Bid Order Quantity: " << book.get_bid_book()[100].front()->get_quantity() << endl;
+    cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[100].front())->get_price() << endl;
 
-    book.submitLimitOrder(type, quantity, price); //0: buy
-    cout << "Bid Order Quantity: " << book.get_bid_book()[price].front()->get_quantity() << endl;
-    cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[price].front())->get_price() << endl;
+    // bool type = 0; //0: buy
+    // double price = 110;
+    // unsigned int quantity = 10;
 
-    type = 1; //1: sell
-    price = 110;
-    quantity = 15;
-    book.submitLimitOrder(type, quantity, price); //1: sell
-    cout << "Ask Order Quantity: " << book.get_ask_book()[price].front()->get_quantity() << endl;
-    cout << "Ask Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_ask_book()[price].front())->get_price() << endl;
-
-    // /*Task Failed Succesfully - seg fault here since buy order got fully filled*/
+    // book.submitLimitOrder(type, quantity, price); //0: buy
     // cout << "Bid Order Quantity: " << book.get_bid_book()[price].front()->get_quantity() << endl;
     // cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[price].front())->get_price() << endl;
 
-    return 0;
+    // type = 1; //1: sell
+    // price = 110;
+    // quantity = 15;
+    // book.submitLimitOrder(type, quantity, price); //1: sell
+    // cout << "Ask Order Quantity: " << book.get_ask_book()[price].front()->get_quantity() << endl;
+    // cout << "Ask Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_ask_book()[price].front())->get_price() << endl;
+
+    return status;
 }

@@ -46,7 +46,7 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
         }
 
         /*Residual Limit Order Quantity - insert into bid book*/
-        // deque<Order> not deque<LimitOrder>
+        // deque<shared_ptr<Order>> not deque<shared_ptr<LimitOrder>>
         bid_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
     }
 
@@ -88,7 +88,7 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
         }
 
         /*Residual Limit Order Quantity - insert into ask book*/
-        // deque<Order> not deque<LimitOrder>
+        // deque<shared_ptr<Order>> not deque<shared_ptr<LimitOrder>>
         ask_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
     }
     return 0;

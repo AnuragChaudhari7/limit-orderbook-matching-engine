@@ -4,14 +4,18 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 #include "OrderBook.h"
 using namespace std;
 
 class CSVParser {
+    private:
+        OrderBook &book;
+    
     public:
-        CSVParser();
+        CSVParser(OrderBook &_book);
 
-        int read_csv(string path_to_csv);
+        int process_csv(string path_to_csv);
 };
 #endif

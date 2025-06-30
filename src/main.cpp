@@ -10,9 +10,11 @@ using namespace std;
 int main(){
     //cout << "Its ALIVEE" << endl;
     OrderBook book = OrderBook();
-    CSVParser parser = CSVParser();
-    parser.read_csv("data/example1.csv");
-    
+    CSVParser parser = CSVParser(book);
+    int status = parser.process_csv("data/example1.csv");
+    cout << "Bid Order Quantity: " << book.get_bid_book()[100].front()->get_quantity() << endl;
+    cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[100].front())->get_price() << endl;
+
     // bool type = 0; //0: buy
     // double price = 110;
     // unsigned int quantity = 10;
@@ -28,5 +30,5 @@ int main(){
     // cout << "Ask Order Quantity: " << book.get_ask_book()[price].front()->get_quantity() << endl;
     // cout << "Ask Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_ask_book()[price].front())->get_price() << endl;
 
-    return 0;
+    return status;
 }

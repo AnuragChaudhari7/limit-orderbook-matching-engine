@@ -14,7 +14,7 @@ int main(){
     int status = parser.process_csv("data/example1.csv");
     cout << "Bid Order Quantity: " << book.get_bid_book()[100].front()->get_quantity() << endl;
     cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[100].front())->get_price() << endl;
-
+    cout << "Bid Order Timestamp: " << book.get_bid_book()[100].front()->get_timestamp() << endl;
     // bool type = 0; //0: buy
     // double price = 110;
     // unsigned int quantity = 10;

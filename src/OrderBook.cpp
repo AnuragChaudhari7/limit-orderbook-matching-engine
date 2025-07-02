@@ -9,7 +9,7 @@ OrderBook::OrderBook(){
 unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, double price){
     /*NOTE: (temporary) generate id & timestamp*/
     unsigned int id = 7;
-    unsigned long int timestamp = 10;
+    unsigned long int timestamp = time(nullptr);
 
     //TODO: order_queue.front()->... therefore ensure not null
     /*Matching Logic*/

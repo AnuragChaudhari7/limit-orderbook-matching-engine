@@ -1,10 +1,12 @@
 #ifndef ORDER_H
 #define ORDER_H
 
+#include <ctime>
+
 class Order{
     private:
         unsigned int id; //NOTE: generate unique IDs?
-        unsigned long int timestamp; //NOTE: Unix Epoch?
+        time_t timestamp; //NOTE: Unix Epoch?
         bool type; //(0: buy, 1: sell)
         unsigned int quantity;
 

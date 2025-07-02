@@ -4,6 +4,7 @@ file(GLOB LOGIC_SOURCES
     "OrderBook.cpp"
     "LimitOrder.cpp"
     "CSVParser.cpp"
+    "ID.cpp"
 )
 
 # Create a static library for reuse

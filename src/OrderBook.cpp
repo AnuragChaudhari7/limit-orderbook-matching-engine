@@ -6,9 +6,9 @@ OrderBook::OrderBook(){
     /*Default map & deque constructors*/
 }
 
-unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, double price, const uint32_t user_id){
-    /*NOTE: (temporary) generate id & timestamp*/
-    unsigned int id = 7;
+order_id OrderBook::submitLimitOrder(bool type, unsigned int quantity, double price, const uint32_t user_id){
+    
+    order_id id = ID::generate_order_id(user_id);
     unsigned long int timestamp = time(nullptr);
 
     //TODO: order_queue.front()->... therefore ensure not null
@@ -91,5 +91,5 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
         // deque<shared_ptr<Order>> not deque<shared_ptr<LimitOrder>>
         ask_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
     }
-    return 0;
+    return id;
 }

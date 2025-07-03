@@ -74,6 +74,7 @@ int books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double,
     return 0;
 }
 
+//TODO: All tests need to be changed using order_id
 /*
  * Test Cases for books_equal() comparison function. 
  * Tests all return values: 0,1,2,3,4,5,6s

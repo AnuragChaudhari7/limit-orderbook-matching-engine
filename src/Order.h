@@ -2,20 +2,21 @@
 #define ORDER_H
 
 #include <ctime>
+#include "ID.h"
 
 class Order{
     private:
-        unsigned int id; //NOTE: generate unique IDs?
+        order_id id; //NOTE: generate unique IDs?
         time_t timestamp; //NOTE: Unix Epoch?
         bool type; //(0: buy, 1: sell)
         unsigned int quantity;
 
     public:
-        Order(unsigned int _id, unsigned long int _timestamp, bool _type, unsigned int _quantity);
+        Order(order_id _id, unsigned long int _timestamp, bool _type, unsigned int _quantity);
 
         virtual ~Order() = default;
 
-        unsigned int get_id(){return id;}
+        order_id get_id(){return id;}
 
         unsigned long int get_timestamp(){return timestamp;}
 

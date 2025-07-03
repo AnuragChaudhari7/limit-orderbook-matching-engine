@@ -20,7 +20,7 @@ class OrderBook {
         OrderBook();
 
         //NOTE: submitLimitOrder(), cancelLimitOrder(id), updateLimitOrder(id, quantity, price), go here as functions
-        unsigned int submitLimitOrder(bool type, unsigned int quantity , double price);
+        unsigned int submitLimitOrder(bool type, unsigned int quantity , double price, const uint32_t user_id = 0x01234567);
 
         map<double, deque<shared_ptr<Order>>> get_bid_book(){return bid_book;}
 

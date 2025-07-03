@@ -7,14 +7,19 @@ using namespace std;
 using namespace chrono;
 //using time_stamp = time_point<system_clock,microseconds>;
 
+struct order_id {
+    uint32_t user_id;
+    uint64_t timestamp;
+    uint32_t counter;
+};
 
 class ID {
     private:
         ID(){}
         static uint32_t counter;
-        
+
     public:
-        static __uint128_t generate_order_id(uint32_t user_id);
+        static order_id generate_order_id(uint32_t user_id);
         
 };
 

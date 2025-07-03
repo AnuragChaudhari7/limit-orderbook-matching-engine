@@ -1,6 +1,6 @@
 #include "ID.h"
 
-__uint128_t ID::generate_order_id(uint32_t user_id){
+order_id ID::generate_order_id(uint32_t user_id){
     //Get timestamp
     uint64_t timestamp = duration_cast<microseconds>(system_clock::now().time_since_epoch()).count();
 
@@ -9,7 +9,7 @@ __uint128_t ID::generate_order_id(uint32_t user_id){
     counter++;
 
     // join these & user_id together
-    //TODO: typecast user_id to __int 28 first?
-    __uint128_t order_id = ((__uint128_t) user_id << 96) | ((__uint128_t) timestamp << 32) | ((__uint128_t) counter);
-    return order_id;
+    order_id oid = { user_id, timestamp, counter };
+    
+    return oid;
 }

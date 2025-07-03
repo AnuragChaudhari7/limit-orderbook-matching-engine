@@ -1,5 +1,7 @@
 #include "ID.h"
 
+uint32_t ID::counter = 0;
+
 order_id ID::generate_order_id(uint32_t user_id){
     //Get timestamp
     uint64_t timestamp = duration_cast<microseconds>(system_clock::now().time_since_epoch()).count();

@@ -26,7 +26,8 @@ def generate_order(order_id, price_range, quantity_range, tick_size=0.01, user_i
 
     if order_type == "LIMIT":
         raw_price = random.uniform(*price_range)
-        order["price"] = round(round(raw_price / tick_size) * tick_size, 2)
+        #order["price"] = round(round(raw_price / tick_size) * tick_size, 2)
+        order["price"] = int(round(raw_price / tick_size) * tick_size)
 
     return order
 

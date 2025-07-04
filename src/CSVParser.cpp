@@ -15,29 +15,39 @@ int CSVParser::process_csv(string path_to_csv) {
         return -1;
     }
     
-    /*Go through lines (orders)*/
+   /*Line by Line*/
     while(getline(file, line)){
+        
         /*Match the order_type*/
         stringstream order_stream(line);
         string s;
-        getline(order_stream, s, ',');
 
-        if(s == "LimitOrder"){
+        /*Get user_id*/
+        getline(order_stream, s, ',');
+        uint32_t user_id = stoi(s);
+
+        /*Get order type*/
+        getline(order_stream, s, ',');
+        string order_type = s;
+        
+        /*Check order type*/
+        if(s == "LIMIT"){
             cout << "Limit Order: ";
-            /*Parse buy_or_sell, quantity, price*/
+            
+            /*Get side (buy/sell)*/
             getline(order_stream, s, ',');
-            int side = stoi(s);
-            //cout << side << ",";
+            bool side = (s == "BUY") ? false : true;
+            cout << side << ",";
             
             getline(order_stream, s, ',');
             unsigned int quantity = stoi(s);
-            //cout << quantity << ",";
+            cout << quantity << ",";
 
             getline(order_stream, s, ',');
             double price = stod(s);
-            //cout << price << endl;
+            cout << price << endl;
 
-            book.submitLimitOrder(side, quantity, price);
+            book.submitLimitOrder(side, quantity, price, user_id);
         }
         else{
             cerr << "Error: Invalid Order Type" << endl;

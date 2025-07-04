@@ -6,14 +6,14 @@ OrderBook::OrderBook(){
     /*Default map & deque constructors*/
 }
 
-unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, double price){
-    /*NOTE: (temporary) generate id & timestamp*/
-    unsigned int id = 7;
-    unsigned long int timestamp = 10;
+order_id OrderBook::submitLimitOrder(bool side, unsigned int quantity, double price, const uint32_t user_id){
+    
+    order_id id = ID::generate_order_id(user_id);
+    unsigned long int timestamp = time(nullptr);
 
     //TODO: order_queue.front()->... therefore ensure not null
     /*Matching Logic*/
-    if(!type){ //Buy Order
+    if(!side){ //Buy Order
         
         auto ask_it = ask_book.begin();
         while(ask_it != ask_book.end()) {
@@ -47,7 +47,7 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
 
         /*Residual Limit Order Quantity - insert into bid book*/
         // deque<shared_ptr<Order>> not deque<shared_ptr<LimitOrder>>
-        bid_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
+        bid_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, side, quantity, price));
     }
 
     else{ //Sell Order
@@ -89,7 +89,7 @@ unsigned int OrderBook::submitLimitOrder(bool type, unsigned int quantity, doubl
 
         /*Residual Limit Order Quantity - insert into ask book*/
         // deque<shared_ptr<Order>> not deque<shared_ptr<LimitOrder>>
-        ask_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, type, quantity, price));
+        ask_book[price].emplace_back(make_shared<LimitOrder>(id, timestamp, side, quantity, price));
     }
-    return 0;
+    return id;
 }

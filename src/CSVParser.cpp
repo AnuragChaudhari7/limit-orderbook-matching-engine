@@ -10,7 +10,7 @@ int CSVParser::process_csv(string path_to_csv) {
 
     /*Check header*/
     getline(file, line);
-    if(line != "order_type,type,quantity,price"){
+    if(line != "user_id,type,side,quantity,price"){
         cerr << "Error in " << path_to_csv << ": Unexpected CSV Header" << endl;
         return -1;
     }
@@ -26,8 +26,8 @@ int CSVParser::process_csv(string path_to_csv) {
             cout << "Limit Order: ";
             /*Parse buy_or_sell, quantity, price*/
             getline(order_stream, s, ',');
-            int type = stoi(s);
-            //cout << type << ",";
+            int side = stoi(s);
+            //cout << side << ",";
             
             getline(order_stream, s, ',');
             unsigned int quantity = stoi(s);
@@ -37,7 +37,7 @@ int CSVParser::process_csv(string path_to_csv) {
             double price = stod(s);
             //cout << price << endl;
 
-            book.submitLimitOrder(type, quantity, price);
+            book.submitLimitOrder(side, quantity, price);
         }
         else{
             cerr << "Error: Invalid Order Type" << endl;

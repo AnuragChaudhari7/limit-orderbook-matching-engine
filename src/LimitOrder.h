@@ -3,12 +3,13 @@
 
 #include "Order.h"
 
+//TODO: Change id side to order_id
 class LimitOrder : public Order {
     private:
         double price;
 
     public:
-        LimitOrder(unsigned int _id, unsigned long int _timestamp,  bool _type, unsigned int _quantity, double _price);
+        LimitOrder(order_id _id, unsigned long int _timestamp,  bool _side, unsigned int _quantity, double _price);
 
         double get_price(){return price;}
 

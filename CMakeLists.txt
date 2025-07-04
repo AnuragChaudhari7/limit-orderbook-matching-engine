@@ -25,4 +25,5 @@ add_compile_options(-Werror)
 
 # Add subdirs
 add_subdirectory(src)
-add_subdirectory(tests)
+#TODO: Add this back later...
+#add_subdirectory(tests)

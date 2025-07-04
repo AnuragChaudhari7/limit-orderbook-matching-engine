@@ -47,7 +47,7 @@ int books_equal(map<double, deque<shared_ptr<Order>>> expected_book, map<double,
                 return 3; //quantity <= 0, order shouldve been deleted
             }
 
-            if(expected_order->get_type() !=order->get_type()){
+            if(expected_order->get_side() !=order->get_side()){
                 return 4;
             }
 
@@ -150,7 +150,7 @@ TEST(BookEquality, ZeroQuantityOrderNotRemoved){
     EXPECT_EQ(books_equal(expected_book, book), 3);
 }
 
-TEST(BookEquality, IncorrectOrderTypeInBook){
+TEST(BookEquality, IncorrectOrderSideInBook){
     //ret 4
     map<double, deque<shared_ptr<Order>>> expected_book;
     map<double, deque<shared_ptr<Order>>> book;

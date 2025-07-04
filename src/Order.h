@@ -8,11 +8,11 @@ class Order{
     private:
         order_id id; //NOTE: generate unique IDs?
         time_t timestamp; //NOTE: Unix Epoch?
-        bool type; //(0: buy, 1: sell)
+        bool side; //(0: buy, 1: sell)
         unsigned int quantity;
 
     public:
-        Order(order_id _id, unsigned long int _timestamp, bool _type, unsigned int _quantity);
+        Order(order_id _id, unsigned long int _timestamp, bool _side, unsigned int _quantity);
 
         virtual ~Order() = default;
 
@@ -20,7 +20,7 @@ class Order{
 
         unsigned long int get_timestamp(){return timestamp;}
 
-        bool get_type(){return type;}
+        bool get_side(){return side;}
 
         unsigned int get_quantity(){return quantity;}
 

@@ -18,22 +18,22 @@ int main(){
     // cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[100].front())->get_price() << endl;
     // cout << "Bid Order Timestamp: " << book.get_bid_book()[100].front()->get_timestamp() << endl;
     
-    bool type = 0; //0: buy
+    bool side = 0; //0: buy
     double price = 110;
     unsigned int quantity = 10;
 
-    book.submitLimitOrder(type, quantity, price); //0: buy
+    book.submitLimitOrder(side, quantity, price); //0: buy
     cout << "Bid Order Quantity: " << book.get_bid_book()[price].front()->get_quantity() << endl;
     cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[price].front())->get_price() << endl;
     cout << "Bid Order ID user_id: " << book.get_bid_book()[price].front()->get_id().user_id << endl;
     cout << "Bid Order ID timestamp: " << book.get_bid_book()[price].front()->get_id().timestamp << endl;
     cout << "Bid Order ID counter: " << book.get_bid_book()[price].front()->get_id().counter << endl;
 
-    type = 0; //1: sell
+    side = 0; //1: sell
     price = 120;
     quantity = 5;
 
-    book.submitLimitOrder(type, quantity, price); 
+    book.submitLimitOrder(side, quantity, price); 
     cout << "Bid Order Quantity: " << book.get_bid_book()[price].front()->get_quantity() << endl;
     cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[price].front())->get_price() << endl;
     cout << "Bid Order ID user_id: " << book.get_bid_book()[price].front()->get_id().user_id << endl;

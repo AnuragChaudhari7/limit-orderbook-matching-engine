@@ -7,30 +7,18 @@
 #include "LimitOrder.h"
 #include "CSVParser.h"
 #include "ID.h"
+#include "Exchange.h"
 using namespace std;
 using namespace chrono;
 
 int main(){
     //cout << "Its ALIVEE" << endl;
-    OrderBook book1 = OrderBook();
-    OrderBook book2 = OrderBook();
-    OrderBook book3 = OrderBook();
+    Exchange exchange = Exchange();
     string filepath = "data/orders10k.csv";
-    int numRecords = 30000;
+
+    exchange.performance(filepath);
     int status = 0;
-    /**
-     * CSV file checking/simulation
-     */
 
-    CSVParser parser1 = CSVParser(book1);
-    CSVParser parser2 = CSVParser(book2);
-    CSVParser parser3 = CSVParser(book3);
-
-    auto start_time = high_resolution_clock::now();
-    status = parser1.process_csv(filepath);
-    status = parser2.process_csv(filepath);
-    status = parser3.process_csv(filepath);
-    auto end_time = high_resolution_clock::now();
     // cout << "Bid Order Quantity: " << book.get_bid_book()[100].front()->get_quantity() << endl;
     // cout << "Bid Order Price: $" << dynamic_pointer_cast<LimitOrder>(book.get_bid_book()[100].front())->get_price() << endl;
     // cout << "Bid Order Timestamp: " << book.get_bid_book()[100].front()->get_timestamp() << endl;
@@ -62,8 +50,5 @@ int main(){
     // cout << "Bid Order ID timestamp: " << book.get_bid_book()[price].front()->get_id().timestamp << endl;
     // cout << "Bid Order ID counter: " << book.get_bid_book()[price].front()->get_id().counter << endl;
     
-    duration<double> elapsed = end_time - start_time;
-    //NOTE: might need more granular than seconds
-    cout << "Processed " << numRecords << " records in: "  << elapsed.count() << " seconds" << endl;
     return status;
 }

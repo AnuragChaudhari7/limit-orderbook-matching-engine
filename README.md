@@ -43,13 +43,8 @@ This project implements a **real-time Limit Order Book (LOB)** and **price-time 
 ## Project Structure
 ```
 ├── src/ # Core engine logic (LOB, Order, Matching)
-│ ├── engine/
-│ ├── models/
-│ ├── db/
 ├── tests/ # Google Test unit test cases
 ├── data/ # Simulated order flow and output logs
-├── orders.csv # Input order file (used in stress testing)
-├── schema.sql # PostgreSQL schema
 ├── CMakeLists.txt # Build configuration
 └── README.md # Project documentation
 ```

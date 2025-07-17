@@ -5,6 +5,7 @@ file(GLOB LOGIC_SOURCES
     "LimitOrder.cpp"
     "CSVParser.cpp"
     "ID.cpp"
+    "Exchange.cpp"
 )
 
 # Create a static library for reuse

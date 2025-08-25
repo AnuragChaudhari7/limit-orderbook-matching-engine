@@ -15,3 +15,9 @@ order_id ID::generate_order_id(uint32_t user_id){
     
     return oid;
 }
+
+std::string to_string(const order_id& id) {
+    std::ostringstream oss;
+    oss << id.user_id << "-" << id.timestamp << "-" << id.counter;              // reuse operator<<
+    return oss.str();
+}

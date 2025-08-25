@@ -14,9 +14,7 @@ using namespace chrono;
 int main(){
     //cout << "Its ALIVEE" << endl;
     Exchange exchange = Exchange();
-    string filepath = "data/orders10k.csv";
-
-    exchange.performance(filepath);
+    
     int status = 0;
 
     // cout << "Bid Order Quantity: " << book.get_bid_book()[100].front()->get_quantity() << endl;
